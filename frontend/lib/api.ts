@@ -1,11 +1,12 @@
 const PRIMARY_API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
 // Falls back to the Dockerized backend when nothing is listening locally on :4000.
-const FALLBACK_API_BASE = process.env.NEXT_PUBLIC_API_URL_FALLBACK || 'http://192.168.1.18:8091/api';
+const FALLBACK_API_BASE = process.env.NEXT_PUBLIC_API_URL_FALLBACK || 'http://192.168.1.10:8091/api';
 
 let apiBasePromise: Promise<string> | null = null;
 
 // Resolved once per page load, then cached — every call after the first reuses
 // whichever base actually answered instead of re-probing on every request.
+//THIS THROWS AN ERROR WHEN LOCALHOST 4000 IS NOT AVAILABLE, SO IT FALLS BACK TO THE DOCKERIZED BACKEND
 function resolveApiBase(): Promise<string> {
   if (!apiBasePromise) {
     apiBasePromise = fetch(`${PRIMARY_API_BASE}/health`)
